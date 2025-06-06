@@ -145,6 +145,7 @@ public class RegistroCertificacion extends JFrame {
 		txtEstado = new JTextField();
 		txtEstado.setBounds(450, 36, 123, 20);
 		contentPane.add(txtEstado);
+		txtEstado.setFont(new Font("Arial", Font.PLAIN, 11));
 		txtEstado.setColumns(10);
 		
 		JLabel lblEstado = new JLabel("Estado");
@@ -186,6 +187,7 @@ void grabar() {
 
     // Obtiene el cliente seleccionado y valida que no sea nulo
     Cliente clienteSeleccionado = (Cliente) cboCliente.getSelectedItem();
+    // Verifica si se ha seleccionado un cliente; si no, muestra un mensaje de error y termina el proceso
     if (clienteSeleccionado == null) {
         JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
@@ -208,17 +210,17 @@ void grabar() {
     try {
         // Crea una nueva certificación y asigna los valores seleccionados
         Certificacion certi = new Certificacion();
-        certi.setEstado(estado);
-        certi.setFechaEmi(fechaEmision);
-        certi.setFechaVen(fechaVencimiento);
-        certi.setCliente(clienteSeleccionado);
-        certi.setTipoauditoria(auditoriaSeleccionada);
-        certi.setEspecialista(especialistaSeleccionado);
+        certi.setEstado(estado); // Asigna el estado de la certificación
+        certi.setFechaEmi(fechaEmision); // Asigna la fecha de emisión
+        certi.setFechaVen(fechaVencimiento); // Asigna la fecha de vencimiento
+        certi.setCliente(clienteSeleccionado); // Asocia el cliente seleccionado
+        certi.setTipoauditoria(auditoriaSeleccionada); // Asocia el tipo de auditoría seleccionado
+        certi.setEspecialista(especialistaSeleccionado); // Asocia el especialista seleccionado
 
-        // Guarda la certificación usando el servicio
+        // Guarda la certificación usando el servicio correspondiente
         certificacionService.Crear(certi);
 
-        // Muestra mensaje de éxito
+        // Muestra mensaje de éxito con el nombre de la empresa del cliente
         JOptionPane.showMessageDialog(null, "¡Certificación registrada con éxito al Cliente: " + certi.getCliente().getNombreEmpresa() + "!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         
         // Limpia el área de texto
@@ -230,25 +232,25 @@ void grabar() {
     }
 }
 
-// Lista todas las certificaciones y las muestra en el área de texto
-void listar() {
-    textArea.setText(""); // Limpia el área de texto
-    certificacionService.ListarTodo().forEach(c -> {
-        textArea.append(imprimir(c)); // Agrega cada certificación formateada al área de texto
-    });
-}
-
-// Devuelve una cadena con la información formateada de una certificación
-String imprimir(Certificacion certi) {
-    // Retorna los datos principales de la certificación en formato legible
-    return "N° Certificacion: " + certi.getIdCertificacion() +
-           "\nCliente: " + certi.getCliente().getNombreEmpresa() +
-           "\nTipo Auditoria: " + certi.getTipoauditoria().getDescripcion() +
-           "\nEspecialista: " + certi.getEspecialista().getNombre() +
-           "\nFecha Emisión: " + String.valueOf(certi.getFechaEmi()) +
-           "\nEstado Certificación: " + certi.getEstado() +
-           "\n------------------------------------------------------------------\n";
-}
+	// Lista todas las certificaciones y las muestra en el área de texto
+	void listar() {
+	    textArea.setText(""); // Limpia el área de texto
+	    certificacionService.ListarTodo().forEach(c -> {
+	        textArea.append(imprimir(c)); // Agrega cada certificación formateada al área de texto
+	    });
+	}
+	
+	// Devuelve una cadena con la información formateada de una certificación
+	String imprimir(Certificacion certi) {
+	    // Retorna los datos principales de la certificación en formato legible
+	    return "N° Certificacion: " + certi.getIdCertificacion() +
+	           "\nCliente: " + certi.getCliente().getNombreEmpresa() +
+	           "\nTipo Auditoria: " + certi.getTipoauditoria().getDescripcion() +
+	           "\nEspecialista: " + certi.getEspecialista().getNombre() +
+	           "\nFecha Emisión: " + String.valueOf(certi.getFechaEmi()) +
+	           "\nEstado Certificación: " + certi.getEstado() +
+	           "\n------------------------------------------------------------------\n";
+	}
 	
 	
 }
