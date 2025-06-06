@@ -155,86 +155,100 @@ public class RegistroCertificacion extends JFrame {
 		llenarCombos();
 	}
 	
+	// Llena los ComboBox con los datos obtenidos de los servicios
 	void llenarCombos() {
-		
-		//COMBO BOX CLIENTES
-		List<Cliente> clientes = clienteService.ListarTodo();
-		
-		DefaultComboBoxModel<Cliente> modelCli = new DefaultComboBoxModel<>(clientes.toArray(new Cliente[0]));
-		cboCliente.setModel(modelCli);
-		
-		//COMBO BOX TIPO AUDITORIA
-		List<Tipoauditoria> tipoauditoria = tipoAuditoria.ListarTodo();
-				
-		DefaultComboBoxModel<Tipoauditoria> modelTipo = new DefaultComboBoxModel<>(tipoauditoria.toArray(new Tipoauditoria[0]));
-		cboAuditoria.setModel(modelTipo);
-		
-		//COMBO BOX ESPECIALISTA
-		List<Especialista> especialistas = especialistaService.ListarTodo();
-				
-		DefaultComboBoxModel<Especialista> modelEspe = new DefaultComboBoxModel<>(especialistas.toArray(new Especialista[0]));
-		cboEspecialista.setModel(modelEspe);
-	}
-	
-	void grabar() {
+        
+    // COMBO BOX CLIENTES: obtiene la lista de clientes y la asigna al combo
+    List<Cliente> clientes = clienteService.ListarTodo();
+    DefaultComboBoxModel<Cliente> modelCli = new DefaultComboBoxModel<>(clientes.toArray(new Cliente[0]));
+    cboCliente.setModel(modelCli);
+    
+    // COMBO BOX TIPO AUDITORIA: obtiene la lista de tipos de auditoría y la asigna al combo
+    List<Tipoauditoria> tipoauditoria = tipoAuditoria.ListarTodo();
+    DefaultComboBoxModel<Tipoauditoria> modelTipo = new DefaultComboBoxModel<>(tipoauditoria.toArray(new Tipoauditoria[0]));
+    cboAuditoria.setModel(modelTipo);
+    
+    // COMBO BOX ESPECIALISTA: obtiene la lista de especialistas y la asigna al combo
+    List<Especialista> especialistas = especialistaService.ListarTodo();
+    DefaultComboBoxModel<Especialista> modelEspe = new DefaultComboBoxModel<>(especialistas.toArray(new Especialista[0]));
+    cboEspecialista.setModel(modelEspe);
+}
 
-	    String estado = txtEstado.getText().trim();
-	    if (estado.isEmpty()) {
-	        JOptionPane.showMessageDialog(null, "El campo 'Estado' no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
-	        return;
-	    }
+// Registra una nueva certificación con los datos seleccionados y validados del formulario
+void grabar() {
 
-	    Cliente clienteSeleccionado = (Cliente) cboCliente.getSelectedItem();
-	    if (clienteSeleccionado == null) {
-	        JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente.", "Error", JOptionPane.ERROR_MESSAGE);
-	        return;
-	    }
+    String estado = txtEstado.getText().trim();
+    // Valida que el campo estado no esté vacío
+    if (estado.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "El campo 'Estado' no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-	    Tipoauditoria auditoriaSeleccionada = (Tipoauditoria) cboAuditoria.getSelectedItem();
-	    if (auditoriaSeleccionada == null) {
-	        JOptionPane.showMessageDialog(null, "Debe seleccionar un tipo de auditoría.", "Error", JOptionPane.ERROR_MESSAGE);
-	        return;
-	    }
+    // Obtiene el cliente seleccionado y valida que no sea nulo
+    Cliente clienteSeleccionado = (Cliente) cboCliente.getSelectedItem();
+    if (clienteSeleccionado == null) {
+        JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-	    Especialista especialistaSeleccionado = (Especialista) cboEspecialista.getSelectedItem();
-	    if (especialistaSeleccionado == null) {
-	        JOptionPane.showMessageDialog(null, "Debe seleccionar un especialista.", "Error", JOptionPane.ERROR_MESSAGE);
-	        return;
-	    }
+    // Obtiene el tipo de auditoría seleccionado y valida que no sea nulo
+    Tipoauditoria auditoriaSeleccionada = (Tipoauditoria) cboAuditoria.getSelectedItem();
+    if (auditoriaSeleccionada == null) {
+        JOptionPane.showMessageDialog(null, "Debe seleccionar un tipo de auditoría.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-	    try {
-	        Certificacion certi = new Certificacion();
-	        certi.setEstado(estado);
-	        certi.setFechaEmi(fechaEmision);
-	        certi.setFechaVen(fechaVencimiento);
-	        certi.setCliente(clienteSeleccionado);
-	        certi.setTipoauditoria(auditoriaSeleccionada);
-	        certi.setEspecialista(especialistaSeleccionado);
+    // Obtiene el especialista seleccionado y valida que no sea nulo
+    Especialista especialistaSeleccionado = (Especialista) cboEspecialista.getSelectedItem();
+    if (especialistaSeleccionado == null) {
+        JOptionPane.showMessageDialog(null, "Debe seleccionar un especialista.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-	        certificacionService.Crear(certi);
+    try {
+        // Crea una nueva certificación y asigna los valores seleccionados
+        Certificacion certi = new Certificacion();
+        certi.setEstado(estado);
+        certi.setFechaEmi(fechaEmision);
+        certi.setFechaVen(fechaVencimiento);
+        certi.setCliente(clienteSeleccionado);
+        certi.setTipoauditoria(auditoriaSeleccionada);
+        certi.setEspecialista(especialistaSeleccionado);
 
-	        JOptionPane.showMessageDialog(null, "¡Certificación registrada con éxito al Cliente: " + certi.getCliente().getNombreEmpresa() + "!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-	        
-	        textArea.setText("");
-  
-	    } catch (Exception e) {
-	        JOptionPane.showMessageDialog(null, "Ocurrió un error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
+        // Guarda la certificación usando el servicio
+        certificacionService.Crear(certi);
 
-	void listar() {
-		textArea.setText("");
-		certificacionService.ListarTodo().forEach(c -> {
-			textArea.append(imprimir(c));
-		});
-	}
-	
-	String imprimir(Certificacion certi) {
-		return "N° Certificacion: " + certi.getIdCertificacion() + "\n" + "Cliente: " + certi.getCliente().getNombreEmpresa() + "\n" + 
-				"Tipo Auditoria: " + certi.getTipoauditoria().getDescripcion() + "\n" + "Especialista: " + certi.getEspecialista().getNombre() + "\n" + 
-				"Fecha Emisión: " + certi.getFechaEmi() + "\n" + "Estado Certificación: " + certi.getEstado() + "\n" + 
-				"------------------------------------------------------------------\n";
-	}
+        // Muestra mensaje de éxito
+        JOptionPane.showMessageDialog(null, "¡Certificación registrada con éxito al Cliente: " + certi.getCliente().getNombreEmpresa() + "!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        
+        // Limpia el área de texto
+        textArea.setText("");
+
+    } catch (Exception e) {
+        // Muestra mensaje de error si ocurre una excepción
+        JOptionPane.showMessageDialog(null, "Ocurrió un error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+// Lista todas las certificaciones y las muestra en el área de texto
+void listar() {
+    textArea.setText(""); // Limpia el área de texto
+    certificacionService.ListarTodo().forEach(c -> {
+        textArea.append(imprimir(c)); // Agrega cada certificación formateada al área de texto
+    });
+}
+
+// Devuelve una cadena con la información formateada de una certificación
+String imprimir(Certificacion certi) {
+    // Retorna los datos principales de la certificación en formato legible
+    return "N° Certificacion: " + certi.getIdCertificacion() +
+           "\nCliente: " + certi.getCliente().getNombreEmpresa() +
+           "\nTipo Auditoria: " + certi.getTipoauditoria().getDescripcion() +
+           "\nEspecialista: " + certi.getEspecialista().getNombre() +
+           "\nFecha Emisión: " + String.valueOf(certi.getFechaEmi()) +
+           "\nEstado Certificación: " + certi.getEstado() +
+           "\n------------------------------------------------------------------\n";
+}
 	
 	
 }
