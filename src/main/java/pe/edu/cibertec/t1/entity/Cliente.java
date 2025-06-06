@@ -1,7 +1,7 @@
 package pe.edu.cibertec.t1.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 
 /**
@@ -58,5 +58,12 @@ public class Cliente implements Serializable {
 	public void setRuc(String ruc) {
 		this.ruc = ruc;
 	}
+
+	@Override
+	public String toString() {
+		return nombreEmpresa;
+	}
+	
+	
 
 }

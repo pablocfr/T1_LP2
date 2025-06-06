@@ -1,14 +1,12 @@
 package pe.edu.cibertec.t1.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import lombok.Data;
+import jakarta.persistence.*;
 import java.util.Date;
 
-
-/**
- * The persistent class for the certificacion database table.
- * 
- */
+@Data
 @Entity
 @NamedQuery(name="Certificacion.findAll", query="SELECT c FROM Certificacion c")
 public class Certificacion implements Serializable {
@@ -28,71 +26,22 @@ public class Certificacion implements Serializable {
 	@Column(name="fecha_ven")
 	private Date fechaVen;
 
-	@Column(name="id_cliente")
-	private int idCliente;
+	@ManyToOne
+	@JoinColumn(name = "id_cliente")
+	private Cliente cliente;
 
-	@Column(name="id_especialista")
-	private int idEspecialista;
+	@ManyToOne
+	@JoinColumn(name = "id_tipoAudi")
+	private Tipoauditoria tipoauditoria;
 
-	private int id_tipoAudi;
+	@ManyToOne
+	@JoinColumn(name = "id_especialista")
+	private Especialista especialista;
+
+	
 
 	public Certificacion() {
 	}
 
-	public int getIdCertificacion() {
-		return this.idCertificacion;
-	}
-
-	public void setIdCertificacion(int idCertificacion) {
-		this.idCertificacion = idCertificacion;
-	}
-
-	public String getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public Date getFechaEmi() {
-		return this.fechaEmi;
-	}
-
-	public void setFechaEmi(Date fechaEmi) {
-		this.fechaEmi = fechaEmi;
-	}
-
-	public Date getFechaVen() {
-		return this.fechaVen;
-	}
-
-	public void setFechaVen(Date fechaVen) {
-		this.fechaVen = fechaVen;
-	}
-
-	public int getIdCliente() {
-		return this.idCliente;
-	}
-
-	public void setIdCliente(int idCliente) {
-		this.idCliente = idCliente;
-	}
-
-	public int getIdEspecialista() {
-		return this.idEspecialista;
-	}
-
-	public void setIdEspecialista(int idEspecialista) {
-		this.idEspecialista = idEspecialista;
-	}
-
-	public int getId_tipoAudi() {
-		return this.id_tipoAudi;
-	}
-
-	public void setId_tipoAudi(int id_tipoAudi) {
-		this.id_tipoAudi = id_tipoAudi;
-	}
 
 }

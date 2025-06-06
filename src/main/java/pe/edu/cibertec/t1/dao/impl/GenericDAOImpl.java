@@ -3,9 +3,10 @@ package pe.edu.cibertec.t1.dao.impl;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
 
 import pe.edu.cibertec.t1.dao.GenericDAO;
 

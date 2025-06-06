@@ -1,7 +1,7 @@
 package pe.edu.cibertec.t1.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 
 /**
@@ -36,5 +36,12 @@ public class Tipoauditoria implements Serializable {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
+	@Override
+	public String toString() {
+		return descripcion;
+	}
+	
+	
 
 }

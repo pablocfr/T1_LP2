@@ -1,7 +1,7 @@
 package pe.edu.cibertec.t1.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 
 /**
@@ -67,5 +67,12 @@ public class Especialista implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
+	
 
 }
