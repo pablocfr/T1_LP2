@@ -249,6 +249,7 @@ void grabar() {
 	           "\nEspecialista: " + certi.getEspecialista().getNombre() +
 	           "\nFecha Emisión: " + String.valueOf(certi.getFechaEmi()) +
 	           "\nEstado Certificación: " + certi.getEstado() +
+	           "\n------------------------------------------------------------------\n" +
 	           "\n------------------------------------------------------------------\n";
 	}
 	
